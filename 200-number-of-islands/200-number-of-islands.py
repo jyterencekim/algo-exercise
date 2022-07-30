@@ -16,24 +16,19 @@ class Solution:
                 yield (row + 1, col)
             if col < COLS - 1:
                 yield (row, col + 1)
-                
-        def explore(row: int, col: int):
-            nonlocal visited
-            to_visit = [(row, col)]
-            
-            while to_visit:
-                r, c = to_visit.pop()
-                visited.add((r, c))
-                
-                for new_r, new_c in get_adjacents(r, c):
-                    if (new_r, new_c) not in visited and grid[new_r][new_c] == LAND:
-                        to_visit.append((new_r, new_c))
-        
+
         for r in range(ROWS):
             for c in range(COLS):
                 if grid[r][c] == LAND and (r, c) not in visited:
                     island_count += 1
-                    explore(r, c)
+                    to_visit = [(r, c)]
+            
+                    while to_visit:
+                        x, y = to_visit.pop()
+                        visited.add((x, y))
+                        for new_r, new_c in get_adjacents(x, y):
+                            if (new_r, new_c) not in visited and grid[new_r][new_c] == LAND:
+                                to_visit.append((new_r, new_c))
         
         return island_count
                     
