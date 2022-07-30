@@ -2,15 +2,9 @@ import math
 
 class Solution:
     def uniquePaths(self, m: int, n: int) -> int:
-        ways = [[0 for _ in range(n)] for _ in range(m)]
+        # ways of choosing m's and n's within (m - 1) and (n - 1)
+        all_combinations = math.perm(m + n - 2)
+        interchangeable_m = math.perm(m - 1)
+        interchangeable_n = math.perm(n - 1)
         
-        for r in range(m):
-            for c in range(n):
-                if (r, c) == (0, 0):
-                    ways[r][c] = 1
-                    continue
-                ways_from_up = ways[r - 1][c] if r > 0 else 0
-                ways_from_left = ways[r][c - 1] if c > 0 else 0
-                ways[r][c] = ways_from_up + ways_from_left
-        
-        return ways[-1][-1]
+        return all_combinations // interchangeable_m // interchangeable_n
