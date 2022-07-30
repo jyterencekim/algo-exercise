@@ -7,6 +7,16 @@ class Solution:
         island_count = 0
         visited = set()
         
+        def get_adjacents(row: int, col: int) -> Tuple[int]:
+            if row > 0:
+                yield (row - 1, col)
+            if col > 0:
+                yield (row, col - 1)
+            if row < ROWS - 1:
+                yield (row + 1, col)
+            if col < COLS - 1:
+                yield (row, col + 1)
+                
         def explore(row: int, col: int):
             nonlocal visited
             to_visit = [(row, col)]
@@ -15,9 +25,8 @@ class Solution:
                 r, c = to_visit.pop()
                 visited.add((r, c))
                 
-                for dr, dc in ((-1, 0), (1, 0), (0, -1), (0, 1)):
-                    new_r, new_c = r + dr, c + dc
-                    if 0 <= new_r < ROWS and 0 <= new_c < COLS and (new_r, new_c) not in visited and grid[new_r][new_c] == LAND:
+                for new_r, new_c in get_adjacents(r, c):
+                    if (new_r, new_c) not in visited and grid[new_r][new_c] == LAND:
                         to_visit.append((new_r, new_c))
         
         for r in range(ROWS):
