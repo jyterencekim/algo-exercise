@@ -21,7 +21,7 @@ class Solution:
         
         
         h, n = 0, 0
-        while h < H and n < N:
+        while h < H:
             if haystack[h] == needle[n]:
                 h += 1
                 n += 1
