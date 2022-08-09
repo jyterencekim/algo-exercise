@@ -1,11 +1,12 @@
 class Solution:
     def strStr(self, haystack: str, needle: str) -> int:
         H, N = len(haystack), len(needle)
+        
+        # longest prefix/suffix lengths for needle[0..x]
         lps = [0 for _ in range(N)]
         
-        # Precompute the longest proper prefix/suffix length table
-        longest = 0
         i = 1
+        longest = 0
         while i < N:
             if needle[i] == needle[longest]:
                 longest += 1
@@ -15,8 +16,9 @@ class Solution:
                 if longest:
                     longest = lps[longest - 1]
                 else:
-                    lps[i] = 0
+                    lps[i] = longest = 0
                     i += 1
+        
         
         h, n = 0, 0
         while h < H and n < N:
@@ -30,5 +32,6 @@ class Solution:
                     n = lps[n - 1]
                 else:
                     h += 1
-            
+        
         return -1
+                    
