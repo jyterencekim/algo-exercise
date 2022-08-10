@@ -18,8 +18,8 @@ class Solution:
                 guess_indices = guess_map[character]
                 matched = secret_indices.intersection(guess_indices)
                 bulls_count = len(matched)
-                remaining = guess_indices - matched
-                cows_count = min(secrets_count - bulls_count, len(remaining))
+                remaining_guesses = guess_indices - matched
+                cows_count = min(secrets_count - bulls_count, len(remaining_guesses))
                 bulls += bulls_count
                 cows += cows_count
                 
