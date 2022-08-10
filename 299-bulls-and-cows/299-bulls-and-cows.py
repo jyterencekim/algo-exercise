@@ -12,14 +12,14 @@ class Solution:
     
         
         bulls, cows = 0, 0
-        for character, indices in secret_map.items():
+        for character, secret_indices in secret_map.items():
+            secrets_count = len(secret_indices)
             if character in guess_map:
                 guess_indices = guess_map[character]
-                matched = indices.intersection(guess_indices)
+                matched = secret_indices.intersection(guess_indices)
                 bulls_count = len(matched)
-                indices_in_secret_count = len(indices)
-                lingering = guess_indices - matched
-                cows_count = min(indices_in_secret_count - bulls_count, len(lingering))
+                remaining = guess_indices - matched
+                cows_count = min(secrets_count - bulls_count, len(remaining))
                 bulls += bulls_count
                 cows += cows_count
                 
