@@ -5,18 +5,15 @@ class Solution:
         relatives = defaultdict(set)
         ANY = '*'
         
-        def to_relatives(x: str) -> List[str]:
-            return [x[:i] + ANY + x[i + 1:] for i in range(len(x))]
+        def to_relatives(x: str):
+            for i in range(len(x)):
+                yield x[:i] + ANY + x[i + 1:]
         
-        def are_adjacents(a: str, b: str) -> bool:
-            return len([c for i, c in enumerate(a) if c != b[i]]) == 1
-        
-        def get_adjacents(x: str) -> List[str]:
+        def get_adjacents(x: str):
             nonlocal relatives
             result = []
             for relative in to_relatives(x):
-                result += relatives[relative]
-            return result
+                yield from relatives[relative]
             
         
         words = set(wordList)
