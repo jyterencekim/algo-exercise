@@ -26,14 +26,14 @@ class Solution:
             for rel in to_relatives(a):
                 relatives[rel].add(a)
         
-        q = deque([(beginWord, 1)])
+        q = deque([(endWord, 1)])
         visited = set()
         
         while q:
             word, dist = q.popleft()
             visited.add(word)
             
-            if word == endWord:
+            if word == beginWord:
                 return dist
             
             for adjacent in get_adjacents(word):
