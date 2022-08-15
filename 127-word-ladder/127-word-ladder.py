@@ -26,18 +26,33 @@ class Solution:
             for rel in to_relatives(a):
                 relatives[rel].add(a)
         
-        q = deque([(endWord, 1)])
-        visited = set()
+        q_forward = deque([(beginWord, 1)])
+        q_backward = deque([(endWord, 1)])
+        visited_forward = { beginWord: 1 }
+        visited_backward = { endWord: 1 }
+        is_forward = True
         
-        while q:
-            word, dist = q.popleft()
-            visited.add(word)
+        while q_forward and q_backward:
+            if is_forward:
+                q = q_forward
+                visited = visited_forward
+                visited_opposite = visited_backward
+            else:
+                q = q_backward
+                visited = visited_backward
+                visited_opposite = visited_forward
+            is_forward = not is_forward
             
-            if word == beginWord:
-                return dist
+            to_consume = len(q)
+            for _ in range(to_consume):
+                word, dist = q.popleft()
+                visited[word] = dist
             
-            for adjacent in get_adjacents(word):
-                if adjacent not in visited:
-                    q.append((adjacent, dist + 1))
+                if word in visited_opposite:
+                    return dist - 1 + visited_opposite[word]
+
+                for adjacent in get_adjacents(word):
+                    if adjacent not in visited:
+                        q.append((adjacent, dist + 1))
         
         return 0
