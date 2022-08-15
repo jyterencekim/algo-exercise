@@ -46,13 +46,13 @@ class Solution:
             to_consume = len(q)
             for _ in range(to_consume):
                 word, dist = q.popleft()
-                visited[word] = dist
             
                 if word in visited_opposite:
                     return dist - 1 + visited_opposite[word]
 
                 for adjacent in get_adjacents(word):
                     if adjacent not in visited:
+                        visited[adjacent] = dist + 1
                         q.append((adjacent, dist + 1))
         
         return 0
