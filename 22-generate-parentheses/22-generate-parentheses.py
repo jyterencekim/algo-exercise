@@ -1,17 +1,21 @@
 class Solution:
     def generateParenthesis(self, n: int) -> List[str]:
         OPENING, CLOSING = '(', ')'
-        def generate(opened: int, closed: int) -> str:
-            nonlocal OPENING, CLOSING, n
+        ans = []
+        def generate(opened: int, closed: int, stack: List[str]):
+            nonlocal OPENING, CLOSING, n, ans
             can_open = n - opened
             can_close = opened - closed
             if not can_open and not can_close:
-                yield ''
+                ans.append(''.join(stack))
             if can_open:
-                for sub in generate(opened + 1, closed):
-                    yield OPENING + sub
+                stack.append(OPENING)
+                generate(opened + 1, closed, stack)
+                stack.pop()
             if can_close:
-                for sub in generate(opened,  closed + 1):
-                    yield CLOSING + sub
+                stack.append(CLOSING)
+                generate(opened,  closed + 1, stack)
+                stack.pop()
         
-        yield from generate(0, 0)
+        generate(0, 0, [])
+        return ans
