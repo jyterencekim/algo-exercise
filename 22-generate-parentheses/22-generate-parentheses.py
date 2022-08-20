@@ -5,7 +5,7 @@ class Solution:
             nonlocal OPENING, CLOSING, n
             can_open = n - opened
             can_close = opened - closed
-            if closed == n:
+            if not can_open and not can_close:
                 yield ''
             if can_open:
                 for sub in generate(opened + 1, closed):
