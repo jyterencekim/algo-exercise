@@ -9,19 +9,17 @@ class Solution:
             return None
         
         odd_head = odd = odd_tail = head
-        even_head = even = None
+        even_head = even = head.next
         
         while odd:
             even = odd.next
-            if not even_head:
-                even_head = even
-            odd.next = even.next if even else None
             if even:
+                odd.next = even.next 
                 even.next = even.next.next if even.next else None
-            odd_tail = odd
+            if not odd.next:
+                odd.next = even_head
+                break
             odd = odd.next
-        
-        odd_tail.next = even_head
         
         return odd_head
                 
