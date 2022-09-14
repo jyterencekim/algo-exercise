@@ -7,18 +7,15 @@ class Solution:
         q = deque() # (value, index)
         
         for i, num in enumerate(nums):
-            if not q or q[0][0] < num:
-                q = deque([(num, i)])
-            else:
-                # maintenance
-                while q and q[0][1] <= i - k:
-                    q.popleft()
+            # maintenance
+            while q and q[0][1] <= i - k:
+                q.popleft()
 
-                while q and q[-1][0] < num:
-                    q.pop()
+            while q and q[-1][0] < num:
+                q.pop()
 
-                if not q or q[-1][0] >= num:
-                    q.append((num, i))
+            if not q or q[-1][0] >= num:
+                q.append((num, i))
             
             result.append(q[0][0])
         
