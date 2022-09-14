@@ -19,8 +19,9 @@ class Solution:
             if not q or q[-1][0] >= num:
                 q.append((num, i))
             
-            result.append(q[0][0])
+            if i + 1 >= k:
+                result.append(q[0][0])
         
-        return result[k - 1:]
+        return result
             
         
