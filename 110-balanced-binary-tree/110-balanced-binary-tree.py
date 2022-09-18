@@ -9,12 +9,17 @@ class Solution:
         def probe(node: Optional[TreeNode], depth: int) -> int:
             if not node:
                 return depth
+            
             l = probe(node.left, depth + 1)
-            r = probe(node.right, depth + 1)
-            if not l or not r:
+            if not l:
                 return None
+            r = probe(node.right, depth + 1)
+            if not r:
+                return None
+            
             if abs(l - r) > 1:
                 return None
+            
             return max(l, r)
         
         depth = probe(root, 0)
