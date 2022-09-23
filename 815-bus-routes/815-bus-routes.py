@@ -20,9 +20,7 @@ class Solution:
                 # guaranteed to be the minimum transfer count
                 return transfer_count
             
-            stops = routes[bus]
-            available_buses = { b for stop in stops for b in buses_for_stop[stop] }
-            
+            available_buses = { b for stop in routes[bus] for b in buses_for_stop[stop] if b != bus }
             for connecting_bus in available_buses:
                 if connecting_bus not in taken:
                     to_take.append((connecting_bus, transfer_count + 1))
