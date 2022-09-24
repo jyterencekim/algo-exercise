@@ -1,12 +1,13 @@
 class Solution:
     def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
-        nums.sort()
+        counts = Counter(nums)
         subsets = {()}
         
-        for num in nums:
+        for num, count in counts.items():
             generated = set(subsets)
-            for s in subsets:
-                generated.add(s + (num,))
+            for c in range(1, count + 1):
+                for s in subsets:
+                    generated.add(s + (num,) * c)
             subsets = generated
             
         return subsets
