@@ -17,12 +17,10 @@ class Solution:
         
         reader, comparer = 0, 0
         while reader < H and comparer < N:
+            while comparer and haystack[reader] != needle[comparer]:
+                comparer = lps[comparer - 1]
             if haystack[reader] == needle[comparer]:
                 comparer += 1
-                reader += 1
-            elif comparer:
-                comparer = lps[comparer - 1]
-            else:
-                reader += 1
-            
+            reader += 1
+        
         return reader - comparer if comparer == N else -1
