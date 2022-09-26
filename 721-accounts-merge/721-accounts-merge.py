@@ -3,38 +3,44 @@ from collections import deque, defaultdict
 
 class Solution:
     def accountsMerge(self, accounts: List[List[str]]) -> List[List[str]]:
-        all_mails = set()
-        connected = defaultdict(set) # (name, mail) -> (name, mail) connections
+        roots = dict()
+        
+        def find_root(email: str) -> str:
+            if email not in roots:
+                roots[email] = email
+            if roots[email] != email:
+                roots[email] = find_root(roots[email])
+            return roots[email]
+        
+        def connect(x: str, y: str) -> str:
+            xr, yr = find_root(x), find_root(y)
+            roots[xr] = yr
+            return xr
+        
+        def are_connected(x: str, y: str) -> bool:
+            return find_root(x) == find_root(y)
+        
+        names_by_email = dict()
         
         for account in accounts:
-            name, mails = account[0], account[1:]
-            
-            for i in range(len(mails)):
-                mail = (name, mails[i])
-                all_mails.add(mail)
-                if i + 1 < len(mails):
-                    next_mail = (name, mails[i + 1])
-                    connected[mail].add(next_mail)
-                    connected[next_mail].add(mail)
-            
-        visited = set()
+            name, emails = account[0], account[1:]
+            primary_email = emails[0]
+            names_by_email[primary_email] = name
+            for email in emails:
+                connect(primary_email, email)
+                
+        mails_by_root = defaultdict(list)
+        emails = roots.keys()
         
-        for mail in all_mails:
-            if mail not in visited:
-                q = deque()
-                mails = set()
-                q.append(mail)
-                name = mail[0]
-                
-                while q:
-                    account = q.popleft()
-                    if account in visited:
-                        continue
-                    visited.add(account)
-                    mails.add(account[1])
-                    
-                    for related in connected[account]:
-                        q.append(related)
-                
-                yield [name, *sorted(mails)]
-                
+        for email in emails:
+            mails_by_root[find_root(email)].append(email)
+        
+        def get_name(emails: List[str]) -> str:
+            return [names_by_email[email] for email in emails if email in names_by_email][0]
+        
+        for root, mails in mails_by_root.items():
+            name = get_name(mails)
+            yield [name] + sorted(mails)
+        
+        
+            
