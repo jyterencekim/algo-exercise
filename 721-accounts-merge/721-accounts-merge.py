@@ -3,38 +3,38 @@ from collections import deque, defaultdict
 
 class Solution:
     def accountsMerge(self, accounts: List[List[str]]) -> List[List[str]]:
-        roots = dict()
-        
-        def find_root(email: str) -> str:
-            if email not in roots:
-                roots[email] = email
-            if roots[email] != email:
-                roots[email] = find_root(roots[email])
-            return roots[email]
-        
-        def connect(x: str, y: str) -> str:
-            xr, yr = find_root(x), find_root(y)
-            roots[xr] = yr
-            return xr
-        
-        def are_connected(x: str, y: str) -> bool:
-            return find_root(x) == find_root(y)
-        
-        names_by_email = dict()
+        all_mails = set()
+        connected = defaultdict(set) # (name, mail) -> (name, mail) connections
         
         for account in accounts:
-            name, emails = account[0], account[1:]
-            for email in emails:
-                connect(emails[0], email)
-                names_by_email[email] = name
-        
-        mails_by_root = defaultdict(list)
-        for k, v in roots.items():
-            mails_by_root[find_root(v)].append(k)
-        
-        for root, mails in mails_by_root.items():
-            name = names_by_email[root]
-            yield [name] + sorted(mails)
-        
-        
+            name, mails = account[0], account[1:]
             
+            for i in range(len(mails)):
+                mail = (name, mails[i])
+                all_mails.add(mail)
+                if i + 1 < len(mails):
+                    next_mail = (name, mails[i + 1])
+                    connected[mail].add(next_mail)
+                    connected[next_mail].add(mail)
+            
+        visited = set()
+        
+        for mail in all_mails:
+            if mail not in visited:
+                q = deque()
+                mails = set()
+                q.append(mail)
+                name = mail[0]
+                
+                while q:
+                    account = q.popleft()
+                    if account in visited:
+                        continue
+                    visited.add(account)
+                    mails.add(account[1])
+                    
+                    for related in connected[account]:
+                        q.append(related)
+                
+                yield [name, *sorted(mails)]
+                
