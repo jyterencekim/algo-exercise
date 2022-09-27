@@ -3,23 +3,23 @@
 #     def __init__(self, val=0, next=None):
 #         self.val = val
 #         self.next = next
-from queue import PriorityQueue
-
 class Solution:
     def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
         sentry = merged = ListNode()
+        if not lists:
+            return None
+        min_heap = []
+        for idx, l in enumerate(lists):
+            if l:
+                heapq.heappush(min_heap, (l.val, idx))
         
-        candidates = PriorityQueue()
-        for node in lists:
-            if node:
-                candidates.put((node.val, hash(node), node))
-        
-        while not candidates.empty():
-            v, _, node = candidates.get()
-            merged.next = ListNode(val=v)
+        while min_heap:
+            min_val, min_idx = heapq.heappop(min_heap)
+            next_to_push = lists[min_idx].next
+            lists[min_idx] = next_to_push
+            if next_to_push:
+                heapq.heappush(min_heap, (next_to_push.val, min_idx))
+            merged.next = ListNode(min_val)
             merged = merged.next
-            if node.next:
-                candidates.put((node.next.val, hash(node.next), node.next))
         
         return sentry.next
-        
