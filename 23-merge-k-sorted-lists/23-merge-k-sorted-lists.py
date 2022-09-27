@@ -5,21 +5,33 @@
 #         self.next = next
 class Solution:
     def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
-        sentry = merged = ListNode()
-        if not lists:
-            return None
-        min_heap = []
-        for idx, l in enumerate(lists):
-            if l:
-                heapq.heappush(min_heap, (l.val, idx))
+        def do_merge(ls: List[Optional[ListNode]]) -> Optional[ListNode]:
+            if not ls:
+                return None
+            if len(ls) == 1:
+                return ls[0]
+            if len(ls) == 2:
+                curr = sentry = ListNode()
+                x, y = ls[0], ls[1]
+                
+                while x or y:
+                    val_x = x.val if x else math.inf
+                    val_y = y.val if y else math.inf
+                    
+                    if val_x <= val_y:
+                        curr.next = ListNode(val=val_x)
+                        x = x.next
+                    else:
+                        curr.next = ListNode(val=val_y)
+                        y = y.next
+                        
+                    curr = curr.next
+                
+                return sentry.next
+            
+            mid = len(ls) // 2
+            left, right = do_merge(ls[:mid]), do_merge(ls[mid:])
+            return do_merge([left, right])
         
-        while min_heap:
-            min_val, min_idx = heapq.heappop(min_heap)
-            next_to_push = lists[min_idx].next
-            lists[min_idx] = next_to_push
-            if next_to_push:
-                heapq.heappush(min_heap, (next_to_push.val, min_idx))
-            merged.next = ListNode(min_val)
-            merged = merged.next
-        
-        return sentry.next
+        return do_merge(lists)
+                
