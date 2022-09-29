@@ -6,19 +6,25 @@
 #         self.right = right
 class Solution:
     def maxPathSum(self, root: Optional[TreeNode]) -> int:
+        global_max_sum = -math.inf
+        
         def get_max_sum(node: Optional[TreeNode]) -> Tuple[int]:
-            # returns (connectable, not connectable)
             if not node:
-                return -math.inf, -math.inf
+                return 0
             
-            left, left_unconnectable = get_max_sum(node.left)
-            right, right_unconnectable = get_max_sum(node.right)
+            left = get_max_sum(node.left)
+            right = get_max_sum(node.right)
             center = node.val
             
-            sum_unconnectable = max(left + center + right, left_unconnectable, right_unconnectable, left, right)
-            sum_connectable = max(left + center, center + right, center)
+            sum_through_node = left + center + right
+            sum_with_child = max(left + center, center + right)
+            sum_alone = center
             
-            return sum_connectable, sum_unconnectable
+            nonlocal global_max_sum
+            global_max_sum = max(global_max_sum, sum_through_node, sum_with_child, sum_alone)
+            
+            return max(sum_with_child, sum_alone)
         
-        return max(get_max_sum(root))
+        get_max_sum(root)
+        return global_max_sum
             
