@@ -5,22 +5,24 @@
 #         self.left = left
 #         self.right = right
 class Solution:
-    def pathSum(self, root: Optional[TreeNode], target: int) -> int:
+    def pathSum(self, root: Optional[TreeNode], targetSum: int) -> int:
         answer = 0
-        def check(node: Optional[TreeNode], carry: int, counter: Counter) -> None:
+        def find(node: Optional[TreeNode], prefix_sums: List[int]):
             if not node:
                 return
+            if not prefix_sums:
+                prefix_sums.append(0)
             
-            nonlocal target, answer
-            val = node.val
-            acc_sum = carry + val
-            complement = acc_sum - target
-            answer += counter[complement]
+            acc_sum = prefix_sums[-1] + node.val
+            complement_to_find = acc_sum - targetSum
+            nonlocal answer
+            answer += len([s for s in prefix_sums if s == complement_to_find])
+            prefix_sums.append(acc_sum)
             
-            counter[acc_sum] += 1
-            check(node.left, acc_sum, counter)
-            check(node.right, acc_sum, counter)
-            counter[acc_sum] -= 1
+            find(node.left, prefix_sums)
+            find(node.right, prefix_sums)
+            prefix_sums.pop()
         
-        check(root, 0, Counter({0: 1}))
+        find(root, [])
         return answer
+                
