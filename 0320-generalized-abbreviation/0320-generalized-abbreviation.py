@@ -5,25 +5,23 @@ class Solution:
             if ptr == N:
                 return [[''], ['']]
             
-            kept = []
-            abbreviated = []
+            kept = set()
+            abbreviated = set()
             
             for i in range(ptr, N):
                 original_prefix = word[ptr:i + 1]
                 abbreviated_prefix = str(i - ptr + 1)
-                
-                postfixes = get(i + 1)
-                nons, abbrs = postfixes
+                nons, abbrs = get(i + 1) # postfixes
                     
                 for non in nons:
-                    kept.append(original_prefix + non)
-                    abbreviated.append(abbreviated_prefix + non)
+                    kept.add(original_prefix + non)
+                    abbreviated.add(abbreviated_prefix + non)
                 for abbr in abbrs:
-                    kept.append(original_prefix + abbr)
+                    kept.add(original_prefix + abbr)
                 
             return kept, abbreviated
         
         results = get(0)
-        return set(results[0] + results[1])
+        return results[0].union(results[1])
             
             
