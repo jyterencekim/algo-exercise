@@ -1,27 +1,30 @@
 class Solution:
     def generateAbbreviations(self, word: str) -> List[str]:
         N = len(word)
-        def get(ptr: int) -> Tuple:
+        result = []
+        def backtrack(ptr: int, abbr: int, carry: List[chr]) -> Tuple:
             if ptr == N:
-                return [[''], ['']]
+                result.append(''.join(carry) + (str(abbr) if abbr else ''))
+                return
             
-            kept = set()
-            abbreviated = set()
+            carry_len = len(carry)
             
-            for i in range(ptr, N):
-                original_prefix = word[ptr:i + 1]
-                abbreviated_prefix = str(i - ptr + 1)
-                nons, abbrs = get(i + 1) # postfixes
-                    
-                for non in nons:
-                    kept.add(original_prefix + non)
-                    abbreviated.add(abbreviated_prefix + non)
-                for abbr in abbrs:
-                    kept.add(original_prefix + abbr)
-                
-            return kept, abbreviated
+            # kept
+            if abbr:
+                carry.append(str(abbr))
+            carry.append(word[ptr])
+            backtrack(ptr + 1, 0, carry)
+            
+            while len(carry) > carry_len:
+                carry.pop()
+            
+            # abbreviated
+            backtrack(ptr + 1, abbr + 1, carry)
+            
+            while len(carry) > carry_len:
+                carry.pop()
         
-        results = get(0)
-        return results[0].union(results[1])
+        backtrack(0, 0, [])
+        return result
             
             
