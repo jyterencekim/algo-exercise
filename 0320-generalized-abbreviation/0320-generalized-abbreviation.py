@@ -5,8 +5,8 @@ class Solution:
             if ptr == N:
                 return [[''], ['']]
             
-            kept = set()
-            abbreviated = set()
+            kept = []
+            abbreviated = []
             
             for i in range(ptr, N):
                 original_prefix = word[ptr:i + 1]
@@ -16,14 +16,14 @@ class Solution:
                 nons, abbrs = postfixes
                     
                 for non in nons:
-                    kept.add(original_prefix + non)
-                    abbreviated.add(abbreviated_prefix + non)
+                    kept.append(original_prefix + non)
+                    abbreviated.append(abbreviated_prefix + non)
                 for abbr in abbrs:
-                    kept.add(original_prefix + abbr)
+                    kept.append(original_prefix + abbr)
                 
             return kept, abbreviated
         
         results = get(0)
-        return results[0].union(results[1])
+        return set(results[0] + results[1])
             
             
