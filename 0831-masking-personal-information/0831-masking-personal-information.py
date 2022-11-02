@@ -14,22 +14,22 @@ class Solution:
         def regularize_phone(x: str) -> Tuple:
             groups = re.split(r'\W+', x)
             number = ''.join(groups)
-            country_number = []
+            country_number = None
             local_number = number[-10:]
             local_numbers = [local_number[:3], local_number[3:6], local_number[6:]]
             
             if len(number) > 10:
-                country_number = [number[:-10]]
+                country_number = number[:-10]
             
-            return [country_number, local_numbers]
+            return country_number, local_numbers
         
         def mask_phone(x: str) -> str:
             country_num, local_nums = regularize_phone(x)
-            c = '+' + mask_number(country_num[0]) if country_num else ''
             ll = [mask_number(n) for n in local_nums[:-1]] + [local_nums[-1]]
-            
-            if c:
+            if country_num:
+                c = '+' + mask_number(country_num)
                 return '-'.join([c] + ll)
+            
             return '-'.join(ll)
         
         if '@' in s:
