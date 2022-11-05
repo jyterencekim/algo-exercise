@@ -11,14 +11,10 @@ class Solution:
         taken = set()
         for r, seat in reservedSeats:
             taken.add(r)
-            if 8 <= seat <= 9:
-                right_taken[r] = True
-            elif 2 <= seat <= 3:
-                left_taken[r] = True
-            elif 4 <= seat <= 5:
-                center_left_taken[r] = True
-            elif 6 <= seat <= 7:
-                center_right_taken[r] = True
+            left_taken[r] |= 2 <= seat <= 3
+            center_left_taken[r] |= 4 <= seat <= 5
+            center_right_taken[r] |= 6 <= seat <= 7
+            right_taken[r] |= 8 <= seat <= 9
         
         availables = 0
         for r in taken:
