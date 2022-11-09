@@ -9,7 +9,7 @@ class Solution:
                 x = x // 10
             return True
         
-        for i in range(1, n):
+        for i in range(n//2, n):
             complement = n - i
             if is_nonzero(complement) and is_nonzero(i):
                 return [i, complement]
