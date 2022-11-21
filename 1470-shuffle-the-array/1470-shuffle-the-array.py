@@ -1,10 +1,8 @@
 class Solution:
     def shuffle(self, nums: List[int], n: int) -> List[int]:
         result = []
-        l, r = 0, len(nums) // 2
-        while r < len(nums):
-            result.append(nums[l])
-            result.append(nums[r])
-            l += 1
-            r += 1
+        half = len(nums) // 2
+        for ptr in range(half):
+            result.append(nums[ptr])
+            result.append(nums[ptr + half])
         return result
