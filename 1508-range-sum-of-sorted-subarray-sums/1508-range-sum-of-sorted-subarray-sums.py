@@ -39,7 +39,10 @@ class Solution:
         SS = len(ssums)
         r_pivot = quickselect(0, SS - 1, right - 1)
         r_sum = sum(ssums[:r_pivot + 1])
-        l_pivot = quickselect(0, r_pivot, left - 1) 
-        l_sum = sum(ssums[:l_pivot])
         
+        if left > 1:
+            l_pivot = quickselect(0, r_pivot, left - 1) 
+            l_sum = sum(ssums[:l_pivot])
+        else:
+            l_sum = 0
         return (r_sum - l_sum) % MOD
