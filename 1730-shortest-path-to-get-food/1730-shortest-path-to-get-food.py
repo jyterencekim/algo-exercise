@@ -25,14 +25,13 @@ class Solution:
                 yield r - 1, c
             if c > 0:
                 yield r, c - 1
-            
+        
+        visited.add(start)
         while q:
             pos, d = q.popleft()
             r, c = pos
             if grid[r][c] == FOOD:
                 return d
-            
-            visited.add(pos)
             
             for next_pos in get_adjacents(pos):
                 x, y = next_pos
