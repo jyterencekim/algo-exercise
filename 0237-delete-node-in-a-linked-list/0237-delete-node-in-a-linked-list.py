@@ -12,9 +12,8 @@ class Solution:
         """
         if not node:
             return
-        curr = node
-        while curr.next and curr.next.next:
-            curr.val = curr.next.val
-            curr = curr.next
-        curr.val = curr.next.val
-        curr.next = None
+        
+        next_node = node.next
+        node.val = next_node.val
+        node.next = next_node.next
+        del(next_node)
