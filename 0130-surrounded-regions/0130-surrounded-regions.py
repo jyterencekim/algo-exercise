@@ -12,24 +12,28 @@ class Solution:
             return r < 0 or c < 0 or r >= ROWS or c >= COLS
         
         def fill(r: int, c: int, visited: Set[Tuple]) -> bool:
-            valid = True
+            if (r, c) in visited:
+                return True
+            
+            visited.add((r, c))
+        
+            is_valid = True
             for x, y in get_adjacents(r, c):
                 if is_outside(x, y):
                     return False
-                if (x, y) not in visited and board[x][y] == O:
-                    visited.add((x, y))
-                    valid = valid and fill(x, y, visited)
-            return valid
+                if board[x][y] == O and (x, y) not in visited:
+                    is_valid = is_valid and fill(x, y, visited)
+            
+            return is_valid
+                
                 
         
         for r in range(ROWS):
             for c in range(COLS):
                 if board[r][c] == O:
-                    visited = {(r, c)}
+                    visited = set()
                     is_valid = fill(r, c, visited)
+                    
                     if is_valid:
                         for x, y in visited:
-                            board[x][y] = X        
-                    
-        
-                
+                            board[x][y] = X
