@@ -6,10 +6,7 @@ class Solution:
         ROWS, COLS = len(board), len(board[0])
         O, X = 'O', 'X'
         def get_adjacents(r: int, c: int):
-            yield (r - 1, c)
-            yield (r, c - 1)
-            yield (r + 1, c)
-            yield (r, c + 1)
+            return [(r - 1, c), (r, c - 1), (r + 1, c), (r, c + 1)]
         
         def is_outside(r: int, c: int) -> bool:
             return r < 0 or c < 0 or r >= ROWS or c >= COLS
