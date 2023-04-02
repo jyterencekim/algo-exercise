@@ -20,21 +20,45 @@
 #        Return None if this NestedInteger holds a single integer
 #        """
 
+from dataclasses import dataclass
+
+
+@dataclass
+class Item:
+    stack: List
+    ptr: int
+        
 class NestedIterator:
+    
     def __init__(self, nestedList: [NestedInteger]):
-        self.stack = list(reversed(nestedList))
+        self.stack = [Item(nestedList, 0)]
     
     def next(self) -> int:
         self.maintain()
-        return self.stack.pop().getInteger()
-    
+        curr = self.stack[-1]
+        ptr = curr.ptr
+        curr.ptr += 1
+        return curr.stack[ptr].getInteger()
+        
     def hasNext(self) -> bool:
         self.maintain()
         return len(self.stack) > 0
         
     def maintain(self) -> None:
-        while self.stack and not self.stack[-1].isInteger():
-            self.stack.extend(reversed(self.stack.pop().getList()))
+        while self.stack:
+            curr = self.stack[-1]
+            
+            if len(curr.stack) == curr.ptr:
+                self.stack.pop()
+                continue
+            
+            if curr.stack[curr.ptr].isInteger():
+                break
+            
+            anew = curr.stack[curr.ptr].getList()
+            curr.ptr += 1
+            self.stack.append(Item(anew, 0))
+            
          
 
 # Your NestedIterator object will be instantiated and called as such:
