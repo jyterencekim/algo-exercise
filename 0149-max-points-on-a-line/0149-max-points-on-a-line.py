@@ -48,8 +48,6 @@ class Solution:
                 points_by_lines[(slope, x_intercept, y_intercept)].add(a)
                 points_by_lines[(slope, x_intercept, y_intercept)].add(b)
         
-        print(points_by_lines)
-        
         return max(len(points) for points in points_by_lines.values())
             
             
