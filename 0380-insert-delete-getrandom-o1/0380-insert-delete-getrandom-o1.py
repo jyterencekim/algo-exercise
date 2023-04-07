@@ -1,31 +1,34 @@
 class RandomizedSet:
 
     def __init__(self):
-        self.members = set()
-        self.order = list()
+        self.idx_by_val = dict() # k = member, v = idx
+        self.members = list()
 
     def insert(self, val: int) -> bool:
-        is_new = val not in self.members
+        is_new = val not in self.idx_by_val
         
         if is_new:
-            self.members.add(val)
-            self.order.append(val)
+            self.members.append(val)
+            self.idx_by_val[val] = len(self.members) - 1
         
         return is_new
         
 
     def remove(self, val: int) -> bool:
-        existed = val in self.members
+        existed = val in self.idx_by_val
         
         if existed:
-            self.members.remove(val)
-            self.order.remove(val)
+            idx = self.idx_by_val[val]
+            self.idx_by_val[self.members[-1]] = idx
+            del self.idx_by_val[val]
+            self.members[-1], self.members[idx] = self.members[idx], self.members[-1]
+            self.members.pop()
         
         return existed
         
 
     def getRandom(self) -> int:
-        return self.order[random.randrange(len(self.order))]
+        return choice(self.members)
         
 
 
