@@ -6,9 +6,9 @@ class RandomizedSet:
 
     def insert(self, val: int) -> bool:
         is_new = val not in self.members
-        self.members.add(val)
         
         if is_new:
+            self.members.add(val)
             self.order.append(val)
         
         return is_new
@@ -16,6 +16,7 @@ class RandomizedSet:
 
     def remove(self, val: int) -> bool:
         existed = val in self.members
+        
         if existed:
             self.members.remove(val)
             self.order.remove(val)
@@ -24,9 +25,7 @@ class RandomizedSet:
         
 
     def getRandom(self) -> int:
-        idx_to_swap = random.randrange(len(self.order))
-        self.order[0], self.order[idx_to_swap] = self.order[idx_to_swap], self.order[0]
-        return self.order[0]
+        return self.order[random.randrange(len(self.order))]
         
 
 
