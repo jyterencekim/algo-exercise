@@ -18,11 +18,12 @@ class RandomizedSet:
         existed = val in self.idx_by_val
         
         if existed:
-            idx = self.idx_by_val[val]
-            self.idx_by_val[self.members[-1]] = idx
-            del self.idx_by_val[val]
-            self.members[-1], self.members[idx] = self.members[idx], self.members[-1]
+            last_member, idx = self.members[-1], self.idx_by_val[val]
+            self.members[idx] = last_member
+            self.idx_by_val[last_member] = idx
+            
             self.members.pop()
+            del self.idx_by_val[val]
         
         return existed
         
