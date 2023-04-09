@@ -1,19 +1,18 @@
 class Solution:
     def countPrimes(self, n: int) -> int:
+        
         if n < 2:
             return 0
 
-        candidates = {x for x in range(2, n)}
+        out = set()        
+        x = 2
+        while x ** 2 < n:
+            if x not in out:
+                for p in range(x ** 2, n, x):
+                    out.add(p)
+            x += 1
         
-        for x in range(2, n):
-            if x not in candidates:
-                continue
-            if x ** 2 > n:
-                break
-            for p in range(x ** 2, n, x):
-                if p in candidates:
-                    candidates.remove(p)
-        
-        return len(candidates)
+        INCLUDING_ITSELF_AND_TWO = 2
+        return n - INCLUDING_ITSELF_AND_TWO - len(out)
                 
         
