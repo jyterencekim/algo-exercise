@@ -6,7 +6,7 @@ class Solution:
         
         def is_number(x: str) -> bool:
             # assuming one char operators only
-            return x.isnumeric() or (len(x) > 1 and x[1:].isnumeric())
+            return x.isnumeric() or (len(x) > 1 and x[1].isnumeric())
         
         
         for token in tokens:
