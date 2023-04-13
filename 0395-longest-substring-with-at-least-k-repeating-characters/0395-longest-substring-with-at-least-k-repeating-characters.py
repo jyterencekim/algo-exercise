@@ -14,13 +14,15 @@ class Solution:
                 if unique_carry[s[end]] == k:
                     satisfied_uniques += 1
                     
-                while len(+unique_carry) > u:
+                while len(unique_carry) > u:
                     if unique_carry[s[start]] == k:
                         satisfied_uniques -= 1
                     unique_carry[s[start]] -= 1
+                    if unique_carry[s[start]] == 0:
+                        del unique_carry[s[start]]
                     start += 1
                 
-                if satisfied_uniques == len(+unique_carry):
+                if satisfied_uniques == len(unique_carry):
                     length = end - start + 1
                     max_length = max(max_length, length)
                     
