@@ -10,18 +10,15 @@ class Solution:
             pt = sentry
             while x and y:
                 val = None
+                taken = None
                 if x.val < y.val:
-                    val = x.val
-                    next_x = x.next
-                    x.next = None
-                    pt.next = x
-                    x = next_x
+                    taken = x
+                    x = x.next
                 else:
-                    val = y.val
-                    next_y = y.next
-                    y.next = None
-                    pt.next = y
-                    y = next_y
+                    taken = y
+                    y = y.next
+                taken.next = None
+                pt.next = taken
                 pt = pt.next
             if x:
                 pt.next = x
