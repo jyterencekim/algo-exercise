@@ -34,21 +34,16 @@ class Solution:
             if not x:
                 return x
             
-            a = b = x
-            a_prev = None
-            a_goes = True
-            # x ... a_prev (a = mid) .. b - None
+            prev = None
+            pt = x
             
-            while b.next:
-                a_prev = a
-                if a_goes:
-                    a = a.next
-                a_goes = not a_goes
-                b = b.next
+            while pt and pt.next:
+                prev = prev.next if prev else x
+                pt = pt.next.next
             
-            right_head = a_prev.next
-            a_prev.next = None
-            return x, right_head
+            mid = prev.next
+            prev.next = None
+            return x, mid
         
         if not head or not head.next:
             return head
