@@ -9,7 +9,6 @@ class Solution:
             sentry = ListNode()
             pt = sentry
             while x and y:
-                taken = None
                 if x.val < y.val:
                     pt.next = x
                     x = x.next
@@ -26,7 +25,6 @@ class Solution:
             
             prev = None
             pt = x
-            
             while pt and pt.next:
                 prev = prev.next if prev else x
                 pt = pt.next.next
