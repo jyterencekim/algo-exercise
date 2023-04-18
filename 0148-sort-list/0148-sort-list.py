@@ -9,22 +9,15 @@ class Solution:
             sentry = ListNode()
             pt = sentry
             while x and y:
-                val = None
                 taken = None
                 if x.val < y.val:
-                    taken = x
+                    pt.next = x
                     x = x.next
                 else:
-                    taken = y
+                    pt.next = y
                     y = y.next
-                taken.next = None
-                pt.next = taken
                 pt = pt.next
-            if x:
-                pt.next = x
-            elif y:
-                pt.next = y
-            
+            pt.next = x or y
             return sentry.next
         
         def divide(x: Optional[ListNode]) -> Tuple[Optional[ListNode]]:
