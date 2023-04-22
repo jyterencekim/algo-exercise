@@ -1,30 +1,22 @@
 type Fn = (...params: any) => any
 
 function memoize(fn: Fn): Fn {
+    const VALUE = Symbol("VALUE");
     const delegate: Fn = fn;
     const m = new Map();
     
     return function(...args) {
-        let ptr = m;
-        if (!ptr.has(args.length)) {
-            ptr.set(args.length, new Map());
-            if (args.length == 0) {
-                ptr.set(0, delegate(...args));
+        let node = m;
+        for (const arg of args) {
+            if (!node.has(arg)) {
+                node.set(arg, new Map());   
             }
+            node = node.get(arg);
         }
-        ptr = ptr.get(args.length);
-        for (let i = 0; i < args.length; i++) {
-            const arg = args[i];
-            if (!ptr.has(arg)) {
-                if (i == args.length - 1) {
-                    ptr.set(arg, delegate(...args));
-                } else {
-                    ptr.set(arg, new Map());   
-                }
-            }
-            ptr = ptr.get(arg);
+        if (!node.has(VALUE)) {
+            node.set(VALUE, delegate(...args));
         }
-        return ptr;
+        return node.get(VALUE);
     }
 }
 
