@@ -2,48 +2,26 @@ class Solution:
     def calculate(self, s: str) -> int:
         OPS = "+-*/"
         ADD, SUB, MUL, DIV = OPS
+        SENTRY = "+0"
+        s = s.replace(' ', '') + SENTRY
         
-        s = s.replace(' ', '')
-        
-        # base
-        exp = ['+']
-        
-        def read_number(pt: int, s: str) -> Tuple[int]:
-            c = []
-            while pt < len(s) and s[pt].isnumeric():
-                c.append(s[pt])
-                pt += 1
-            number = int(''.join(c)) if c else None
-            return number, pt
-        
-        pt = 0
-        while pt < len(s):
-            curr, pt = read_number(pt, s)
-            if exp[-1] == MUL:
-                exp.pop()
-                prev = exp.pop()
-                exp.append(math.floor(prev * curr))
-            elif exp[-1] == DIV:
-                exp.pop()
-                prev = exp.pop()
-                exp.append(math.floor(prev / curr))
-            else:
-                if curr is not None:
-                    exp.append(curr)
-                else: 
-                    exp.append(s[pt])
-            
-            if curr is None:
-                pt += 1
-        
-        result = 0
-        for i, curr in enumerate(exp):
-            if curr in (ADD, SUB):
+        nums = []
+        carry = 0
+        op = ADD
+        for c in s:
+            if c.isnumeric():
+                carry = carry * 10 + int(c)
                 continue
-            if exp[i - 1] == ADD:
-                result += curr
-            elif exp[i - 1] == SUB:
-                result -= curr
-                
-        return int(math.floor(result))
+            if op == ADD:
+                nums.append(carry)
+            elif op == SUB:
+                nums.append(-carry)
+            elif op == MUL:
+                nums.append(nums.pop() * carry)
+            else:
+                nums.append(math.trunc(nums.pop() / carry))
+            op = c
+            carry = 0
+        
+        return sum(nums)
         
