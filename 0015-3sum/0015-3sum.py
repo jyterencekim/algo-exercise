@@ -1,14 +1,18 @@
 class Solution:
     def threeSum(self, nums: List[int]) -> List[List[int]]:
-        ans = set()
+        counter = Counter(nums)
+        nums = []
+        for num, count in counter.items():
+            nums.extend([num] * min(count, 3))
+        
         N = len(nums)
-        num_indice = { num: i for i, num in enumerate(nums) }
-        for i, x in enumerate(nums):
-            needed_sum = -x
+        index_by_num = {num: index for index, num in enumerate(nums)}
+        
+        ans = set()
+        for i in range(N - 1):
             for j in range(i + 1, N):
-                y = nums[j]
-                z = needed_sum - y
-                if z in num_indice and num_indice[z] > j:
-                    ans.add(tuple(sorted([x, y, z])))
+                x = nums[i] + nums[j]
+                if -x in index_by_num and index_by_num[-x] > j:
+                    ans.add(tuple(sorted([nums[i], nums[j], nums[index_by_num[-x]]])))
+        
         return ans
-            
