@@ -12,9 +12,8 @@ class Solution:
         result = None
         
         for word in words:
-            if completes(word):
-                if not result or len(result) > len(word):
-                    result = word
+            if completes(word) and (not result or len(result) > len(word)):
+                result = word
                 
         return result
             
