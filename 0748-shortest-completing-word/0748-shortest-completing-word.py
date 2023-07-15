@@ -1,9 +1,13 @@
 class Solution:
     def shortestCompletingWord(self, licensePlate: str, words: List[str]) -> str:
-        freq = Counter([c.lower() for c in licensePlate if c.isalpha()])
+        required_freq = Counter([c.lower() for c in licensePlate if c.isalpha()])
         
         def completes(x: str) -> bool:
-            return not +(freq - Counter(x))
+            freq = Counter(x)
+            for c, f in required_freq.items():
+                if freq[c] < f:
+                    return False
+            return True
         
         result = None
         
