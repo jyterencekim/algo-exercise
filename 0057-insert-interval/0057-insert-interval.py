@@ -20,13 +20,11 @@ class Solution:
         for i, x in enumerate(intervals):
             if not overlap(x, to_insert):
                 if to_insert[1] < x[0]:
-                    tail = i
                     break
                 result.append(x)
-                tail = i + 1
             else:
                 to_insert = merge(x, to_insert)
-                tail = i + 1
+            tail = i + 1
         
         result.append(to_insert)
         result.extend(intervals[tail:])
