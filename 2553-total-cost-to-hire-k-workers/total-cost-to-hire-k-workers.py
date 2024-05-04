@@ -1,28 +1,29 @@
 class Solution:
     def totalCost(self, costs: List[int], k: int, candidates: int) -> int:
-        costs_and_indices = deque([cost, i] for i, cost in enumerate(costs))
+        costs_and_indices = deque((cost, i) for i, cost in enumerate(costs))
         total_cost = 0
-        heap = [] # minheap
-        LEFT, RIGHT = 0, 1
+        left, right = [], []
 
-        i = 0
-        while costs_and_indices and i < candidates:
-            heapq.heappush(heap, (costs_and_indices.popleft(), LEFT))
-            i += 1
-        i = 0
-        while costs_and_indices and i < candidates:
-            heapq.heappush(heap, (costs_and_indices.pop(), RIGHT))
-            i += 1
+        while costs_and_indices and len(left) < candidates:
+            heapq.heappush(left, costs_and_indices.popleft())
+        while costs_and_indices and len(right) < candidates:
+            heapq.heappush(right, costs_and_indices.pop())
 
         for round in range(k):
-            (min_cost, _), direction = heapq.heappop(heap)
-            total_cost += min_cost
-
-            if costs_and_indices:
-                if direction == LEFT:
-                    heapq.heappush(heap, (costs_and_indices.popleft(), LEFT))
-                else:
-                    heapq.heappush(heap, (costs_and_indices.pop(), RIGHT))
+            left_min, left_idx = heapq.heappop(left) if left else (math.inf, -1)
+            right_min, right_idx = heapq.heappop(right) if right else (math.inf, -1)
             
+            print(left_min, left_idx, right_min, right_idx)
+            if left_min <= right_min:
+                total_cost += left_min
+                heapq.heappush(right, (right_min, right_idx))
+                if costs_and_indices:
+                    heapq.heappush(left, costs_and_indices.popleft())
+            else:
+                total_cost += right_min
+                heapq.heappush(left, (left_min, left_idx))
+                if costs_and_indices:
+                    heapq.heappush(right, costs_and_indices.pop())
+                
 
         return total_cost            
