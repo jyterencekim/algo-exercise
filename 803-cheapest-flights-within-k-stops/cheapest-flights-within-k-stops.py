@@ -13,10 +13,10 @@ class Solution:
         connections = defaultdict(set)
         for x, y, p in flights:
             connections[x].add((y, p))
+
         mh = [(0, 0, src)] # price, stop
-        visited = {src}
         min_steps = dict()
-        optimal = math.inf
+        
         while mh:
             total, step, curr = heapq.heappop(mh)
             if curr == dst:
@@ -25,7 +25,6 @@ class Solution:
                 continue
             min_steps[curr] = step
             for connection, price in connections[curr]:
-                if connection not in visited:
-                    heapq.heappush(mh, (total + price, step + 1, connection))
+                heapq.heappush(mh, (total + price, step + 1, connection))
 
         return -1
