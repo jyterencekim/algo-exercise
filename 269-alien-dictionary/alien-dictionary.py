@@ -1,12 +1,3 @@
-from dataclasses import dataclass
-
-@dataclass
-class TrieNode:
-    c: chr
-    children: dict["TrieNode"]
-    children_order: List[chr]
-    is_word: bool
-
 class Solution:
     def alienOrder(self, words: List[str]) -> str:
         """
