@@ -12,4 +12,4 @@ class Solution:
                 continue
             stack.append(d)
         
-        return ''.join(['/' + d for d in stack]) if stack else '/'
+        return '/' + '/'.join(stack)
