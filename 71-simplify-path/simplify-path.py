@@ -9,7 +9,7 @@ class Solution:
             elif d == '..':
                 if stack:
                     stack.pop()
-            else:
-                stack.append(d)
+                continue
+            stack.append(d)
         
         return '/' + '/'.join(stack)
