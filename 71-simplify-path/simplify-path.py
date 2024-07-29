@@ -4,12 +4,12 @@ class Solution:
         stack = []
 
         for d in dirs:
-            if d == '..':
-                if stack:
-                    stack.pop()
-                continue
             if d == '.' or not d:
                 continue
-            stack.append(d)
+            elif d == '..':
+                if stack:
+                    stack.pop()
+            else:
+                stack.append(d)
         
         return '/' + '/'.join(stack)
