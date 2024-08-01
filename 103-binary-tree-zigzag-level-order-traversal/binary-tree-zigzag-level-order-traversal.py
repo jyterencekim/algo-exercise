@@ -11,25 +11,21 @@ class Solution:
         # if at odd level, pop right; if at even; pop left
 
         levels = []
-        dq, next_dq = deque(), deque()
+        dq = deque()
         dq.append((root, 0))
         
-        while dq or next_dq:
-            if not dq:
-                dq = next_dq
-                next_dq = deque()
+        while dq:
             node, level = dq.popleft()
             if not node:
                 continue
             if len(levels) <= level:
-                levels.append([])
-            levels[-1].append(node.val)
+                levels.append(deque())
             if level % 2 == 0:
-                next_dq.appendleft((node.left, level + 1))
-                next_dq.appendleft((node.right, level + 1))
+                levels[-1].append(node.val)
             else:
-                next_dq.appendleft((node.right, level + 1))
-                next_dq.appendleft((node.left, level + 1))
+                levels[-1].appendleft(node.val)
+            dq.append((node.left, level + 1))
+            dq.append((node.right, level + 1))
 
         
         return levels
