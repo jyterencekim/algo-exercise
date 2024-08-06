@@ -19,19 +19,26 @@ class Solution:
         for x, y in points:
             xs_by_y[y].append(x)
 
+        for ys in ys_by_x.values():
+            ys.sort()
+
+        for xs in xs_by_y.values():
+            xs.sort()
+
         min_area = math.inf
 
         # first decide the base exhaustively, and then look for valid heights
-        for y, xs in xs_by_y.items():
-            for i in range(len(xs) - 1):
-                for j in range(i + 1, len(xs)):
-                    xi, xj = xs[i], xs[j]
-                    w = abs(xj - xi)
-                    for other_y, other_xs in xs_by_y.items():
-                        if other_y == y:
-                            continue
-                        if xi in other_xs and xj in other_xs:
-                            h = abs(other_y - y)
-                            min_area = min(min_area, h * w)
+        for x, y in points:
+            bound = bisect.bisect_left(xs_by_y[y], x)
+            for j in range(bound):
+                prev_x = xs_by_y[y][j]
+                bound_y = bisect.bisect_left(ys_by_x[x], y)
+                for k in range(bound_y):
+                    prev_y = ys_by_x[x][k]
+                    prev_y_index = bisect.bisect_left(ys_by_x[prev_x], prev_y)
+                    if prev_y_index < len(ys_by_x[prev_x]) and ys_by_x[prev_x][prev_y_index] == prev_y:
+                        w = x - prev_x
+                        h = y - prev_y
+                        min_area = min(min_area, w * h)
         
         return min_area if min_area != math.inf else 0
