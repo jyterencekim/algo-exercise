@@ -24,22 +24,16 @@ class Solution:
             
             return results
 
-        def search_three(upper_bound: int, target_sum: int) -> Set[Tuple[int]]:
-            results = set()
-            for idx in range(2, upper_bound):
-                candidates = search_two(idx, target_sum - nums[idx])
-                if candidates:
-                    for candidate in candidates:
-                        results.add(candidate + (nums[idx],))
-            return results
+        def search_k(upper_bound: int, target_sum: int, k: int) -> Set[Tuple[int]]:
+            if k == 2:
+                return search_two(upper_bound, target_sum)
 
-        def search_four() -> Set[Tuple[int]]:
             results = set()
-            for idx in range(3, len(nums)):
-                candidates = search_three(idx, target - nums[idx])
+            for idx in range(k - 1, upper_bound):
+                candidates = search_k(idx, target_sum - nums[idx], k - 1)
                 if candidates:
                     for candidate in candidates:
                         results.add(tuple(sorted(candidate + (nums[idx],))))
             return results
         
-        return search_four()
+        return search_k(len(nums), target, 4)
