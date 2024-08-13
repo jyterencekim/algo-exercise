@@ -7,7 +7,7 @@ class SnapshotArray:
     def set(self, index: int, val: int) -> None:
         entry = (self.version, val)
         snapshots = self.arr[index]
-        candidate_index = bisect.bisect_left(snapshots, (self.version, -math.inf))
+        candidate_index = bisect.bisect_left(snapshots, (self.version, math.inf))
         if candidate_index == len(snapshots):
             snapshots.append(entry)
         else:
@@ -24,7 +24,7 @@ class SnapshotArray:
 
         if candidate_index < 0:
             return 0
-            
+
         entry = snapshots[candidate_index]
         if entry[0] > snap_id:
             return 0
